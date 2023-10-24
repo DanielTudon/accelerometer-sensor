@@ -8,7 +8,7 @@
     <p id="acceleration"></p>
     <button id="startButton">Start Sampling</button>
     <button id="stopButton" style="display: none;">Stop Sampling</button>
-
+    <button id="downloadButton" onclick="downloadCSV()">Download CSV</button>
 
 
     <script>
@@ -57,6 +57,25 @@
 
         document.getElementById('startButton').addEventListener('click', startSampling);
         document.getElementById('stopButton').addEventListener('click', stopSampling);
+
+        function convertDataToCSV(data) {
+            const header = 'Timestamp,X-Axis,Y-Axis,Z-Axis\n'; // CSV header
+            const csvData = data.map((sample, index) => {
+                return `${index * 25},${sample.x},${sample.y},${sample.z}`;
+            }).join('\n');
+            return header + csvData;
+        }
+
+        function downloadCSV() {
+            const csvContent = convertDataToCSV(accelerometerData);
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'accelerometer_data.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
 
 
     </script>
