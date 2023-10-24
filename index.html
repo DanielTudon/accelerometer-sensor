@@ -13,32 +13,35 @@
 
     <script>
         // JavaScript code will go here
-        // Check if the device supports the accelerometer API
-        if (window.DeviceMotionEvent) {
-            window.addEventListener('devicemotion', function(event) {
-                // Access accelerometer data
-                var acceleration = event.acceleration;
-                document.getElementById('acceleration').innerHTML = `X: ${acceleration.x}, Y: ${acceleration.y}, Z: ${acceleration.z}`;
-            });
-        } else {
-            alert('Accelerometer not supported on this device.');
+        let isSampling = false;
+
+        function startSampling() {
+            if (!isSampling) {
+                // Start sampling code here
+
+                // Change button visibility
+                document.getElementById('startButton').style.display = 'none';
+                document.getElementById('stopButton').style.display = 'inline';
+
+                isSampling = true;
+            }
         }
 
-        // Set the desired sample rate (40 Hz)
-        const sampleRate = 25; // 1000ms / 40Hz = 25ms
+        function stopSampling() {
+            if (isSampling) {
+                // Stop sampling code here
 
-        // Initialize variables to keep track of time
-        let lastSampleTime = 0;
+                // Change button visibility
+                document.getElementById('startButton').style.display = 'inline';
+                document.getElementById('stopButton').style.display = 'none';
 
-        // Sample the data at the desired rate
-        window.addEventListener('devicemotion', function(event) {
-            const currentTime = new Date().getTime();
-            if (currentTime - lastSampleTime >= sampleRate) {
-                const acceleration = event.acceleration;
-                document.getElementById('acceleration').innerHTML = `X: ${acceleration.x}, Y: ${acceleration.y}, Z: ${acceleration.z}`;
-                lastSampleTime = currentTime;
+                isSampling = false;
             }
-        });
+        }
+
+        document.getElementById('startButton').addEventListener('click', startSampling);
+        document.getElementById('stopButton').addEventListener('click', stopSampling);
+
     </script>
 </body>
 </html>
