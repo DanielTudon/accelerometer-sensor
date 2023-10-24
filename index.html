@@ -14,10 +14,25 @@
     <script>
         // JavaScript code will go here
         let isSampling = false;
+        let accelerometerData = [];
 
         function startSampling() {
             if (!isSampling) {
+                // Clear previous data
+                accelerometerData = [];
+
                 // Start sampling code here
+                const samplingInterval = 25; // 25 milliseconds (40 Hz)
+                const accelerometerDataHandler = (event) => {
+                    const acceleration = event.acceleration;
+                    accelerometerData.push({
+                        x: acceleration.x,
+                        y: acceleration.y,
+                        z: acceleration.z,
+                    });
+                };
+
+                window.addEventListener('devicemotion', accelerometerDataHandler);
 
                 // Change button visibility
                 document.getElementById('startButton').style.display = 'none';
@@ -30,6 +45,7 @@
         function stopSampling() {
             if (isSampling) {
                 // Stop sampling code here
+                window.removeEventListener('devicemotion', accelerometerDataHandler);
 
                 // Change button visibility
                 document.getElementById('startButton').style.display = 'inline';
@@ -41,6 +57,7 @@
 
         document.getElementById('startButton').addEventListener('click', startSampling);
         document.getElementById('stopButton').addEventListener('click', stopSampling);
+
 
     </script>
 </body>
