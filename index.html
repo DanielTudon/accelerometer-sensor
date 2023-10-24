@@ -1,22 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Web Page with Embedded JavaScript</title>
+    <title>Accelerometer Data</title>
 </head>
 <body>
-    <h1>Hello, World!</h1>
-    <p>Embedded JavaScript Example</p>
+    <h1>Accelerometer Data</h1>
+    <p id="acceleration"></p>
 
     <script>
-        // Your JavaScript code can go here
+        // JavaScript code will go here
+        // Check if the device supports the accelerometer API
         if (window.DeviceMotionEvent) {
             window.addEventListener('devicemotion', function(event) {
+                // Access accelerometer data
                 var acceleration = event.acceleration;
                 document.getElementById('acceleration').innerHTML = `X: ${acceleration.x}, Y: ${acceleration.y}, Z: ${acceleration.z}`;
             });
         } else {
             alert('Accelerometer not supported on this device.');
         }
+
+        // Set the desired sample rate (40 Hz)
+        const sampleRate = 25; // 1000ms / 40Hz = 25ms
+
+        // Initialize variables to keep track of time
+        let lastSampleTime = 0;
+
+        // Sample the data at the desired rate
+        window.addEventListener('devicemotion', function(event) {
+            const currentTime = new Date().getTime();
+            if (currentTime - lastSampleTime >= sampleRate) {
+                const acceleration = event.acceleration;
+                document.getElementById('acceleration').innerHTML = `X: ${acceleration.x}, Y: ${acceleration.y}, Z: ${acceleration.z}`;
+                lastSampleTime = currentTime;
+            }
+        });
     </script>
 </body>
 </html>
