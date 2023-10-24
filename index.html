@@ -9,7 +9,14 @@
 
     <script>
         // Your JavaScript code can go here
-        alert("This is an example of embedded JavaScript!");
+        if (window.DeviceMotionEvent) {
+            window.addEventListener('devicemotion', function(event) {
+                var acceleration = event.acceleration;
+                document.getElementById('acceleration').innerHTML = `X: ${acceleration.x}, Y: ${acceleration.y}, Z: ${acceleration.z}`;
+            });
+        } else {
+            alert('Accelerometer not supported on this device.');
+        }
     </script>
 </body>
 </html>
