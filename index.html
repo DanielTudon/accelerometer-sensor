@@ -59,11 +59,14 @@
         document.getElementById('stopButton').addEventListener('click', stopSampling);
 
         function convertDataToCSV(data) {
-            const header = 'Timestamp,X-Axis,Y-Axis,Z-Axis\n'; // CSV header
             const csvData = data.map((sample, index) => {
-                return `${index * 25},${sample.x},${sample.y},${sample.z}`;
-            }).join('\n');
-            return header + csvData;
+                const timestamp = index * 25; // Generate a timestamp every 25 milliseconds
+                return `${timestamp},${sample.x},${sample.y},${sample.z}`;
+            });
+
+            // Add headers to the CSV
+            const header = 'Timestamp,X-Axis,Y-Axis,Z-Axis\n';
+            return header + csvData.join('\n');
         }
 
         function downloadCSV() {
